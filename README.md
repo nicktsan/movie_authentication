@@ -1,3 +1,5 @@
+This is the authentication solution for https://github.com/nicktsan/movies_frontend_nextjs
+
 Configure hashicorp vault: https://developer.hashicorp.com/vault/tutorials/hcp-vault-secrets-get-started/hcp-vault-secrets-install-cli
 export HCP_CLIENT_ID=<copied-id>
 export HCP_CLIENT_SECRET=<copied-secret>

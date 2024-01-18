@@ -93,8 +93,7 @@ resource "aws_cognito_user_pool_client" "userpool_client" {
 
 #IAM role for the lambda function
 resource "aws_iam_role" "iam_for_lambda" {
-  name = var.tf_lambda_iam_role
-
+  name               = var.tf_lambda_iam_role
   assume_role_policy = data.template_file.lambda_assume_role_policy.rendered
 }
 
@@ -110,7 +109,6 @@ resource "aws_iam_policy" "iam_policy_for_lambda" {
 resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = aws_iam_policy.iam_policy_for_lambda.arn
-
 }
 
 resource "aws_lambda_permission" "lambda_allow_cognito" {
@@ -158,7 +156,7 @@ resource "aws_lambda_layer_version" "lambda_deps_layer" {
     aws_s3_object.lambda_deps_layer_s3_storage,
   ]
 }
-
+# Create an s3 resource for storing the utils_layer
 # resource "aws_lambda_layer_version" "lambda_utils_layer" {
 #   layer_name = "shared_utils"
 #   s3_bucket  = aws_s3_bucket.dev_movie_auth_bucket.id          #conflicts with filename
@@ -193,7 +191,7 @@ resource "aws_s3_bucket_ownership_controls" "dev_movie_auth_bucket_acl_ownership
     object_ownership = "ObjectWriter"
   }
 }
-
+#create an s3 object for storing the utils layer
 # resource "aws_s3_object" "lambda_utils_layer_s3_storage" {
 #   bucket = aws_s3_bucket.dev_movie_auth_bucket.id
 #   key    = var.utils_layer_storage_key
@@ -207,7 +205,7 @@ resource "aws_s3_bucket_ownership_controls" "dev_movie_auth_bucket_acl_ownership
 #     data.archive_file.utils_layer_code_zip,
 #   ]
 # }
-
+#create an s3 resource for storing the deps layer
 resource "aws_s3_object" "lambda_deps_layer_s3_storage" {
   bucket = aws_s3_bucket.dev_movie_auth_bucket.id
   key    = var.deps_layer_storage_key
@@ -220,4 +218,16 @@ resource "aws_s3_object" "lambda_deps_layer_s3_storage" {
   depends_on = [
     data.archive_file.deps_layer_code_zip,
   ]
+}
+
+resource "aws_iam_role" "admin_group_role" {
+  name               = "admin-group-role"
+  assume_role_policy = data.aws_iam_policy_document.admin_group_role.json
+}
+
+resource "aws_cognito_user_group" "admin" {
+  name         = "admin"
+  user_pool_id = aws_cognito_user_pool.userpool.id
+  description  = "Admin group for the movies web app. Managed via Terraform."
+  role_arn     = aws_iam_role.admin_group_role.arn
 }

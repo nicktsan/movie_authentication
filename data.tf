@@ -36,3 +36,28 @@ data "hcp_vault_secrets_secret" "stripeSecret" {
   app_name    = "movie-app"
   secret_name = var.stripe_secret_key
 }
+
+data "aws_iam_policy_document" "admin_group_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Federated"
+      identifiers = ["cognito-identity.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "cognito-identity.amazonaws.com:aud"
+      values   = ["us-east-1:12345678-dead-beef-cafe-123456790ab"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "cognito-identity.amazonaws.com:amr"
+      values   = ["authenticated"]
+    }
+  }
+}
