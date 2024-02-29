@@ -137,7 +137,6 @@ resource "aws_lambda_function" "post_confirmation_lambda" {
 
   environment {
     variables = {
-      # STRIPE_SECRET = jsondecode(data.aws_secretsmanager_secret_version.current.secret_string)[var.stripe_secret_key]
       STRIPE_SECRET = data.hcp_vault_secrets_secret.stripeSecret.secret_value
     }
   }

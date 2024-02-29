@@ -1,3 +1,12 @@
+Prerequisites:
+- backend in https://github.com/nicktsan/aws_backend/tree/main deployed
+- The Terraform CLI (1.2.0+) installed.
+- The AWS CLI installed.
+- AWS account and associated credentials that allow you to create resources.
+- Hashicorp vault configured
+- API Gateway Logging role set up. A detailed guide can be found at https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
+Read the Terraform/AWS setup tutorials at https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli and https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-build for detailed instructions.
+
 This is the authentication solution for https://github.com/nicktsan/movies_frontend_nextjs
 
 Configure hashicorp vault: https://developer.hashicorp.com/vault/tutorials/hcp-vault-secrets-get-started/hcp-vault-secrets-install-cli

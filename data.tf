@@ -6,14 +6,6 @@ data "template_file" "lambda_iam_policy" {
   template = file("./template/lambda_iam_policy.tpl")
 }
 
-# data "aws_secretsmanager_secret" "stripeSecret" {
-#   name = var.stripe_secrect_name
-# }
-
-# data "aws_secretsmanager_secret_version" "current" {
-#   secret_id = data.aws_secretsmanager_secret.stripeSecret.id
-# }
-
 data "archive_file" "deps_layer_code_zip" {
   type        = "zip"
   source_dir  = "${path.module}/lambda/dist/layers/deps-layer/"
