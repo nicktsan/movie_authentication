@@ -170,7 +170,7 @@ resource "aws_lambda_layer_version" "lambda_deps_layer" {
 # }
 # Create a bucket to store the lambda layer
 resource "aws_s3_bucket" "dev_movie_auth_bucket" {
-  bucket = "movie-authentication-bucket"
+  bucket = "movie-authentication-bucket2"
 
   tags = {
     Name        = "My movies_authentication dev bucket"
